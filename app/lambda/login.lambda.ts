@@ -53,7 +53,7 @@ async function baseLoginHandler(
     }
 
     return {
-      statusCode: UNAUTHORIZED,
+      statusCode: OK,
       body: JSON.stringify({ success: false, message: 'username and password do not match' }),
     }
   } catch (err) {
