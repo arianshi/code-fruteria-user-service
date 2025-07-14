@@ -1,28 +1,25 @@
-import * as cdk from 'aws-cdk-lib'
+import { Stack, StackProps } from 'aws-cdk-lib'
 import { Construct } from 'constructs'
-import * as lambda from 'aws-cdk-lib/aws-lambda'
-import * as apigateway from 'aws-cdk-lib/aws-apigateway'
-import * as path from 'path'
+import { RestApi } from 'aws-cdk-lib/aws-apigateway'
+import { Topic } from 'aws-cdk-lib/aws-sns'
+import { LoginApiStack } from './login-api.stack'
 
-export class UserServiceStack extends cdk.Stack {
-  constructor(scope: Construct, id: string, props?: cdk.StackProps) {
+export class UserServiceStack extends Stack {
+  constructor(scope: Construct, id: string, props?: StackProps) {
     super(scope, id, props)
 
-    const loginLambda = new lambda.Function(this, 'LoginLambda', {
-      runtime: lambda.Runtime.NODEJS_18_X,
-      handler: 'code-fruteria-user-service.handler',
-      code: lambda.Code.fromAsset(path.join(__dirname, '../lambda')),
+    const api = new RestApi(this, 'LoginRestApi', {
+      restApiName: 'User Login API',
     })
 
-    const api = new apigateway.RestApi(this, 'LoginAPI', {
-      restApiName: 'Login Service',
-      defaultCorsPreflightOptions: {
-        allowOrigins: apigateway.Cors.ALL_ORIGINS,
-        allowMethods: apigateway.Cors.ALL_METHODS,
-      },
-    })
+    const alarmsTopic = new Topic(this, 'LoginAlarmsTopic')
 
-    const loginResource = api.root.addResource('login')
-    loginResource.addMethod('POST', new apigateway.LambdaIntegration(loginLambda))
+    const serviceStage = 'dev'
+
+    new LoginApiStack(this, 'LoginApiStack', {
+      api,
+      serviceStage,
+      alarmsTopic,
+    })
   }
 }
