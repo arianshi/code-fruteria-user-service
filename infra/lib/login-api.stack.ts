@@ -27,35 +27,24 @@ export class LoginApiStack extends NestedStack {
       `/${props.serviceStage}/login-secret-key`
     )
   
-    const usernameAppConfig = Secret.fromSecretNameV2(
+   
+  
+    const USERNAE_KEY = Secret.fromSecretNameV2(
       this,
-      'LoginUsernameSecret',
-      `${props.serviceStage}/login/username`
+      'UsernameKey',
+      `/${props.serviceStage}/username/key`
     )
-
-    const passwordAppConfig = Secret.fromSecretNameV2(
-      this,
-      'LoginPasswordSecret',
-      `${props.serviceStage}/login/password`
-    )
-
-
-    const username = usernameAppConfig
-      .secretValueFromJson('username')
+      .secretValueFromJson('key')
       .unsafeUnwrap()
 
-
-    console.log({
-      username
-    })
-
-    const password = passwordAppConfig
-      .secretValueFromJson('password')
+    const PASSWORD_KEY = Secret.fromSecretNameV2(
+      this,
+      'PasswordKey',
+      `/${props.serviceStage}/password/key`
+    )
+      .secretValueFromJson('key')
       .unsafeUnwrap()
 
-      console.log({
-        password
-      })
 
     new RestEndpoint(this, 'Login', {
       api: props.api,
@@ -67,8 +56,8 @@ export class LoginApiStack extends NestedStack {
       environment: {
         STAGE: props.serviceStage,
         LOGIN_SECRET_KEY: loginSecretKey,
-        LOGIN_USERNAME: username,
-        LOGIN_PASSWORD: password,
+        LOGIN_USERNAME: USERNAE_KEY,
+        LOGIN_PASSWORD: PASSWORD_KEY,
       },
       alarmsTopic: props.alarmsTopic,
     })
