@@ -41,13 +41,21 @@ export class LoginApiStack extends NestedStack {
 
 
     const username = usernameAppConfig
-      .secretValueFromJson('username')
+      .secretValueFromJson('usernameAppConfig')
       .unsafeUnwrap()
 
+
+    console.log({
+      username
+    })
 
     const password = passwordAppConfig
-      .secretValueFromJson('password')
+      .secretValueFromJson('passwordAppConfig')
       .unsafeUnwrap()
+
+      console.log({
+        password
+      })
 
     new RestEndpoint(this, 'Login', {
       api: props.api,
