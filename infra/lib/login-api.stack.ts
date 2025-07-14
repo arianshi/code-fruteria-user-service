@@ -29,19 +29,19 @@ export class LoginApiStack extends NestedStack {
   
     const usernameAppConfig = Secret.fromSecretNameV2(
       this,
-      'usernameAppConfig',
+      'LoginUsernameSecret',
       `${props.serviceStage}/login/username`
     )
 
     const passwordAppConfig = Secret.fromSecretNameV2(
       this,
-      'passwordAppConfig',
+      'LoginPasswordSecret',
       `${props.serviceStage}/login/password`
     )
 
 
     const username = usernameAppConfig
-      .secretValueFromJson('usernameAppConfig')
+      .secretValueFromJson('username')
       .unsafeUnwrap()
 
 
@@ -50,7 +50,7 @@ export class LoginApiStack extends NestedStack {
     })
 
     const password = passwordAppConfig
-      .secretValueFromJson('passwordAppConfig')
+      .secretValueFromJson('password')
       .unsafeUnwrap()
 
       console.log({
