@@ -5,7 +5,9 @@ import { Topic } from 'aws-cdk-lib/aws-sns'
 import { LoginApiStack } from './login-api.stack'
 
 export class UserServiceStack extends Stack {
-  constructor(scope: Construct, id: string, props?: StackProps) {
+  constructor(scope: Construct, id: string, props: StackProps & {
+    stage: string
+  }) {
     super(scope, id, props)
 
     const api = new RestApi(this, 'LoginRestApi', {
@@ -14,7 +16,7 @@ export class UserServiceStack extends Stack {
 
     const alarmsTopic = new Topic(this, 'LoginAlarmsTopic')
 
-    const serviceStage = 'dev'
+    const serviceStage = props.stage.toLowerCase()
 
     new LoginApiStack(this, 'LoginApiStack', {
       api,

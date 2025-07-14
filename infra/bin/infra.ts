@@ -11,4 +11,5 @@ new UserServiceStack(app, "CodeFruteriaUserService", {
     region: "eu-central-1",
     account: "058264384896",
   },
+  stage: 'development',
 });
