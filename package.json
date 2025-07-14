@@ -1,0 +1,45 @@
+{
+  "name": "code-fruteria-user-service",
+  "version": "1.0.0",
+  "description": "User service for code-fruteria",
+  "main": "index.js",
+  "repository": "git@github.com:arianshi/code-fruteria-user-service.git",
+  "private": true,
+  "workspaces": {
+    "packages": [
+      "infra",
+      "app"
+    ]
+  },
+  "devDependencies": {
+    "@commitlint/cli": "17.3.0",
+    "@commitlint/config-conventional": "17.3.0",
+    "@commitlint/top-level": "17.0.0",
+    "@tsconfig/node16": "16.1.1",
+    "@typescript-eslint/eslint-plugin": "6.8.0",
+    "@typescript-eslint/parser": "6.8.0",
+    "eslint": "8.51.0",
+    "eslint-config-prettier": "9.0.0",
+    "eslint-config-standard": "17.1.0",
+    "eslint-plugin-jest": "27.4.2",
+    "eslint-plugin-n": "16.2.0",
+    "eslint-plugin-node": "11.1.0",
+    "eslint-plugin-prettier": "4.2.1",
+    "eslint-plugin-promise": "6.1.1",
+    "eslint-plugin-standard": "5.0.0",
+    "husky": "8.0.3",
+    "lint-staged": "14.0.1",
+    "mockdate": "^3.0.5",
+    "prettier": "2.8.1",
+    "typescript": "5.2.2"
+  },
+  "scripts": {
+    "prepare": "husky install"
+  },
+  "lint-staged": {
+    "infra/**/*.{js,md,html,json}": "prettier --write",
+    "infra/**/*.ts": "eslint --cache --fix",
+    "app/**/*.{js,md,html,json}": "prettier --write",
+    "app/**/*.ts": "eslint --cache --fix"
+  }
+}

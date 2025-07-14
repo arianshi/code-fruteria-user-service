@@ -1,0 +1,19 @@
+{
+	"folders": [
+		{
+			"name": "arianshi/code-fruteria-user-service",
+			"path": "."
+		},
+		{
+			"name": "app",
+			"path": "app"
+		},
+		{
+			"name": "infra",
+			"path": "infra"
+		}
+	],
+	"settings": {
+		"window.title": "code-fruteria-user-service"
+	}
+}

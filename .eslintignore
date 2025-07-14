@@ -1,0 +1,6 @@
+
+# CDK asset staging directory
+infra/.cdk.staging
+infra/cdk.out
+
+node_modules

@@ -1,0 +1,33 @@
+{
+  "extends": [
+    "standard",
+    "plugin:@typescript-eslint/recommended",
+    "plugin:prettier/recommended",
+    "plugin:jest/recommended"
+  ],
+  "plugins": [
+    "@typescript-eslint",
+    "jest"
+  ],
+  "parser": "@typescript-eslint/parser",
+  "rules": {
+    "@typescript-eslint/adjacent-overload-signatures": "error",
+    "prettier/prettier": [
+      "error"
+    ],
+    "@typescript-eslint/no-explicit-any": "warn",
+    "yoda": "off",
+    "no-unused-vars": "off",
+    "@typescript-eslint/no-unused-vars": "error",
+    "no-dupe-class-members": "off",
+    "no-use-before-define": [
+      0
+    ],
+    "@typescript-eslint/no-use-before-define": [
+      0
+    ]
+  },
+  "globals": {
+    "fetch": false
+  }
+}
