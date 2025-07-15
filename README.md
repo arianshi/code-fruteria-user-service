@@ -88,8 +88,9 @@ Tests are written using [Jest](https://jestjs.io/) or Vitest, depending on setup
 
 | Environment | Description      |
 |-------------|------------------|
-| dev         | Local development|
-| prod        | Production stack |
+| dev         | Development environment|
+| staging     | Staging environment|
+| prod        | Production environment |
 
 ## 📄 License
 
