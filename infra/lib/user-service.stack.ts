@@ -3,6 +3,7 @@ import { Construct } from 'constructs'
 import { RestApi } from 'aws-cdk-lib/aws-apigateway'
 import { Topic } from 'aws-cdk-lib/aws-sns'
 import { ConnectTokenApiStack } from './connect-token-api-stack'
+import { UserInfoApiStack } from './userinfo-api-stack'
 
 export class UserServiceStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps & {
@@ -19,11 +20,11 @@ export class UserServiceStack extends Stack {
 
     const serviceStage = props.stage.toLowerCase()
 
-    // new LoginApiStack(this, 'LoginApiStack', {
-    //   api,
-    //   serviceStage,
-    //   alarmsTopic,
-    // })
+    new UserInfoApiStack(this, 'UserInfoApiStack', {
+      api,
+      serviceStage,
+      alarmsTopic,
+    })
 
     new ConnectTokenApiStack(this, 'ConnectTokenStack', {
       api,
