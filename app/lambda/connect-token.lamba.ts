@@ -30,11 +30,17 @@ const schema = Joi.object({
 
 // Sign token utility
 function signTokens(payload: object) {
-  return {
+  const tokens = {
     access_token: jwt.sign(payload, JWT_SECRET, { expiresIn: ACCESS_TOKEN_EXPIRY }),
     refresh_token: jwt.sign(payload, JWT_SECRET, { expiresIn: REFRESH_TOKEN_EXPIRY }),
     token_type: 'Bearer',
     expires_in: 2 * 60 * 60, // 7200s
+  }
+
+  return {
+    code: 2000,
+    message: 'Token generated successfully',
+    data: tokens,
   }
 }
 
@@ -49,10 +55,9 @@ async function baseConnectTokenHandler(
 ): Promise<APIGatewayProxyResult> {
   const { grant_type, encrypted, refresh_token } = event.body
 
-  logger.info('baseConnectTokenHandler: ', { grant_type, encrypted, refresh_token })
+  logger.info('baseConnectTokenHandler: ', { grant_type })
 
   if (grant_type === 'password') {
-    
     let decryptedStr = ''
     try {
       const bytes = CryptoJS.AES.decrypt(encrypted!, SECRET_KEY)
@@ -61,14 +66,14 @@ async function baseConnectTokenHandler(
       logger.info('AES decrypt error', { err })
       return {
         statusCode: BAD_REQUEST,
-        body: JSON.stringify({ error: 'invalid_payload', message: 'Invalid encrypted content' }),
+        body: JSON.stringify({ code: 4001, error: 'invalid_payload', message: 'Invalid encrypted content' }),
       }
     }
 
     if (!decryptedStr) {
       return {
         statusCode: BAD_REQUEST,
-        body: JSON.stringify({ error: 'invalid_payload', message: 'Empty decrypted result' }),
+        body: JSON.stringify({ code: 4001, error: 'invalid_payload', message: 'Empty decrypted result' }),
       }
     }
 
@@ -78,7 +83,7 @@ async function baseConnectTokenHandler(
     } catch {
       return {
         statusCode: BAD_REQUEST,
-        body: JSON.stringify({ error: 'invalid_payload', message: 'Decrypted data is not valid JSON' }),
+        body: JSON.stringify({ code: 4001, error: 'invalid_payload', message: 'Decrypted data is not valid JSON' }),
       }
     }
 
@@ -93,8 +98,12 @@ async function baseConnectTokenHandler(
       }
     } else {
       return {
-        statusCode: UNAUTHORIZED,
-        body: JSON.stringify({ error: 'invalid_grant', message: 'Username or password incorrect' }),
+        statusCode: OK,
+        body: JSON.stringify({
+          code: 4002,
+          error: 'invalid_grant',
+          message: 'Username or password incorrect',
+        }),
       }
     }
   }
@@ -111,14 +120,22 @@ async function baseConnectTokenHandler(
       logger.info('Invalid refresh token', { err })
       return {
         statusCode: UNAUTHORIZED,
-        body: JSON.stringify({ error: 'invalid_grant', message: 'Refresh token expired or invalid' }),
+        body: JSON.stringify({
+          code: 4003,
+          error: 'invalid_grant',
+          message: 'Refresh token expired or invalid',
+        }),
       }
     }
   }
 
   return {
     statusCode: BAD_REQUEST,
-    body: JSON.stringify({ error: 'unsupported_grant_type' }),
+    body: JSON.stringify({
+      code: 4004,
+      error: 'unsupported_grant_type',
+      message: 'Grant type not supported',
+    }),
   }
 }
 
