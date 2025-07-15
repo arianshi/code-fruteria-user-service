@@ -22,9 +22,33 @@ code-fruteria-user-service/
 - AWS Lambda-based user services
 - AWS CDK for infrastructure provisioning
 - JWT-based authentication
-- Environment configuration using SSM
 - Modular architecture for easy scaling
 
+## 🔄 CI/CD Pipeline
+
+This project supports a fully automated CI/CD pipeline using AWS CDK Pipelines.
+
+### 📦 Deployment Steps
+
+1. Bootstrap your AWS environment (first time only):
+
+   ```bash
+   npx cdk bootstrap
+   ```
+
+2. Deploy the pipeline:
+
+   ```bash
+   npx cdk deploy code-fruteria-user-service-pipeline
+   ```
+
+3. Deploy the build project:
+
+   ```bash
+   npx cdk deploy code-fruteria-user-service-build
+   ```
+
+![code-fruteria-user-service-pipeline ](pipeline.png)
 ## 🌐 Production URL
 
 Frontend App: [https://smartretailstore.net](https://smartretailstore.net)
