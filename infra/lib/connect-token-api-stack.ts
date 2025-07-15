@@ -6,32 +6,24 @@ import { RestEndpoint } from './rest-endpoint'
 import { StringParameter } from 'aws-cdk-lib/aws-ssm'
 import { Secret } from 'aws-cdk-lib/aws-secretsmanager'
 
-
-interface LoginApiStackProps extends NestedStackProps {
+interface ConnectTokenApiStackProps extends NestedStackProps {
   api: IRestApi
   serviceStage: string
   alarmsTopic: Topic
 }
 
-export class LoginApiStack extends NestedStack {
-  constructor(scope: Construct, id: string, props: LoginApiStackProps) {
+export class ConnectTokenApiStack extends NestedStack {
+  constructor(scope: Construct, id: string, props: ConnectTokenApiStackProps) {
     super(scope, id, props)
-
-
-    console.log({
-      serviceStage: props.serviceStage
-    })
 
     const loginSecretKey = StringParameter.valueForStringParameter(
       this,
       `/${props.serviceStage}/login-secret-key`
     )
-  
-   
-  
-    const USERNAE_KEY = Secret.fromSecretNameV2(
+
+    const USERNAME_KEY = Secret.fromSecretNameV2(
       this,
-      'UsernameKey',
+      'ConnectTokenUsernameKey',
       `/${props.serviceStage}/username/key`
     )
       .secretValueFromJson('key')
@@ -39,25 +31,33 @@ export class LoginApiStack extends NestedStack {
 
     const PASSWORD_KEY = Secret.fromSecretNameV2(
       this,
-      'PasswordKey',
+      'ConnectTokenPasswordKey',
       `/${props.serviceStage}/password/key`
     )
       .secretValueFromJson('key')
       .unsafeUnwrap()
 
+    const JWT_SECRET = Secret.fromSecretNameV2(
+      this,
+      'JwtSecretKey',
+      `/${props.serviceStage}/jwt-secret/key`
+    )
+      .secretValueFromJson('key')
+      .unsafeUnwrap()
 
-    new RestEndpoint(this, 'Login', {
+    new RestEndpoint(this, 'ConnectToken', {
       api: props.api,
-      entry: '../app/lambda/login.lambda.ts',
+      entry: '../app/lambda/connect-token.lamba.ts',
       httpMethod: 'POST',
-      path: '/login',
+      path: '/connect/token',
       timeout: Duration.seconds(30),
       memorySize: 256,
       environment: {
         STAGE: props.serviceStage,
         LOGIN_SECRET_KEY: loginSecretKey,
-        LOGIN_USERNAME: USERNAE_KEY,
+        LOGIN_USERNAME: USERNAME_KEY,
         LOGIN_PASSWORD: PASSWORD_KEY,
+        JWT_SECRET: JWT_SECRET,
       },
       alarmsTopic: props.alarmsTopic,
     })
