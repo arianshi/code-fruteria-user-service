@@ -4,6 +4,7 @@ import { RestApi } from 'aws-cdk-lib/aws-apigateway'
 import { Topic } from 'aws-cdk-lib/aws-sns'
 import { ConnectTokenApiStack } from './connect-token-api-stack'
 import { UserInfoApiStack } from './userinfo-api-stack'
+import { LogoutApiStack } from './logout-api-stack'
 
 export class UserServiceStack extends Stack {
   constructor(scope: Construct, id: string, props: StackProps & {
@@ -31,5 +32,12 @@ export class UserServiceStack extends Stack {
       serviceStage,
       alarmsTopic,
     })
+
+    new LogoutApiStack(this, 'LogoutStack', {
+      api,
+      serviceStage,
+      alarmsTopic,
+    })
+
   }
 }
