@@ -28,6 +28,20 @@ code-fruteria-user-service/
 
 This project supports a fully automated CI/CD pipeline using AWS CDK Pipelines.
 
+1. **Clone the repository**
+   ```bash
+   git@github.com:arianshi/code-fruteria-user-service.git
+   cd code-fruteria-user-service
+   ```
+2. **Install dependencies**
+   ```bash
+   yarn
+   ```
+3. **Deploy the stack**
+   ```bash
+   npx cdk deploy code-fruteria-user-service
+   ```
+
 ### 📦 Deployment Steps
 
 1. Bootstrap your AWS environment (first time only):
