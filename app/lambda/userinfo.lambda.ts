@@ -32,7 +32,10 @@ async function baseUserInfoHandler(event: APIGatewayProxyEvent): Promise<APIGate
         code: 2000,
         message: 'User info retrieved successfully',
         data: {
-          username: decoded.username,
+          username: decoded.sub,
+          role: decoded.role,
+          exp: decoded.exp,
+          iat: decoded.iat,
         },
       }),
     }
