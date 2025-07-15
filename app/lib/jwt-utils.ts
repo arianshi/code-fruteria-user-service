@@ -1,4 +1,5 @@
 import jwt from 'jsonwebtoken'
+import { logger } from './logger'
 
 export interface JwtPayload {
   sub: string       // userId
@@ -39,5 +40,6 @@ export function signTokens(payload: Pick<JwtPayload, 'sub' | 'username' | 'role'
 }
 
 export function verifyToken(token: string): JwtPayload {
+  logger.info('verifyToken verifying', { verifying: jwt.verify(token, JWT_SECRET) as JwtPayload })
   return jwt.verify(token, JWT_SECRET) as JwtPayload
 }

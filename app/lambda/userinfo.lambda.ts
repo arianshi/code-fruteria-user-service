@@ -20,7 +20,12 @@ async function baseUserInfoHandler(event: APIGatewayProxyEvent): Promise<APIGate
   const token = authHeader.replace(/^Bearer /i, '').trim()
 
   try {
+
+    logger.info('get token to verify', { token })
     const decoded = verifyToken(token)
+
+    logger.info('Token get verification decoded', { decoded: JSON.stringify(decoded) })
+
     return {
       statusCode: 200,
       body: JSON.stringify({

@@ -15,6 +15,14 @@ export class UserInfoApiStack extends NestedStack {
   constructor(scope: Construct, id: string, props: UserInfoApiStackProps) {
     super(scope, id, props)
 
+    const USERNAME_KEY = Secret.fromSecretNameV2(
+      this,
+      'ConnectTokenUsernameKey',
+      `/${props.serviceStage}/username/key`
+    )
+      .secretValueFromJson('key')
+      .unsafeUnwrap()
+      
     const JWT_SECRET = Secret.fromSecretNameV2(
       this,
       'JwtSecretKeyUserInfo',
