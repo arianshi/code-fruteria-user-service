@@ -40,6 +40,7 @@ export function signTokens(payload: Pick<JwtPayload, 'sub' | 'username' | 'role'
 }
 
 export function verifyToken(token: string): JwtPayload {
-  logger.info('verifying::: ', { token, JWT_SECRET})
-  return jwt.verify(token, JWT_SECRET) as JwtPayload
+ const cleaned = token.replace(/^"(.*)"$/, '$1')
+  logger.info('verifying::: ', { token: cleaned, JWT_SECRET })
+  return jwt.verify(cleaned, JWT_SECRET) as JwtPayload
 }
