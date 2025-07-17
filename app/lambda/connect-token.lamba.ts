@@ -11,6 +11,7 @@ import { logger } from '../lib/logger'
 import { injectLambdaContext } from '@aws-lambda-powertools/logger'
 import { clientVersion } from '../middleware/client-version'
 import { customHttpErrorLogger } from '../lib/custom-http-error-logger'
+import { verifyToken } from '../lib/jwt-utils'
 
 // Environment
 const USER = { username: process.env.LOGIN_USERNAME, password: process.env.LOGIN_PASSWORD }
@@ -110,12 +111,17 @@ async function baseConnectTokenHandler(
 
   if (grant_type === 'refresh_token') {
     try {
-      const decoded = jwt.verify(refresh_token!, JWT_SECRET) as jwt.JwtPayload
-      const payload = { sub: decoded.sub, role: decoded.role }
+      const decoded = verifyToken(refresh_token as string)
+      
+      logger.info('refresh_token token', { decoded: JSON.stringify(decoded) })
+
+      const payload = { sub: decoded.sub, role: 'basicUser' }
+
       return {
         statusCode: OK,
         body: JSON.stringify(signTokens(payload)),
       }
+      
     } catch (err) {
       logger.info('Invalid refresh token', { err })
       return {
