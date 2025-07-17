@@ -40,6 +40,6 @@ export function signTokens(payload: Pick<JwtPayload, 'sub' | 'username' | 'role'
 }
 
 export function verifyToken(token: string): JwtPayload {
-  logger.info('verifyToken verifying', { JWT_SECRET, verifying: jwt.verify(token, JWT_SECRET) as JwtPayload })
+  logger.info('verifying::: ', { token, JWT_SECRET, verifying: jwt.verify(token, JWT_SECRET) as JwtPayload })
   return jwt.verify(token, JWT_SECRET) as JwtPayload
 }

@@ -56,7 +56,7 @@ async function baseConnectTokenHandler(
 ): Promise<APIGatewayProxyResult> {
   const { grant_type, encrypted, refresh_token } = event.body
 
-  logger.info('baseConnectTokenHandler: ', { grant_type })
+  logger.info('✅ ✅ ✅ baseConnectTokenHandler: ', { grant_type })
 
   if (grant_type === 'password') {
     let decryptedStr = ''
@@ -111,6 +111,9 @@ async function baseConnectTokenHandler(
 
   if (grant_type === 'refresh_token') {
     try {
+
+      logger.info('✅ ✅ ✅ refresh_token:::: ', { refresh_token })
+
       const decoded = verifyToken(refresh_token as string)
       
       logger.info('refresh_token token', { decoded: JSON.stringify(decoded) })
